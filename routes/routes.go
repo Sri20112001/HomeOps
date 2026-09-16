@@ -27,5 +27,7 @@ func SetupRoutes(router *gin.Engine) {
 	api := router.Group("/api")
 	{
 		UserRoutes(api)
+		AuthRoutes(api)
+
 	}
 }
