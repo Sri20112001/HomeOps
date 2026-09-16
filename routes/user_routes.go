@@ -10,7 +10,7 @@ func UserRoutes(rg *gin.RouterGroup) {
 	users := rg.Group("/users")
 	{
 		users.GET("", controllers.GetUsers)
-		// users.POST("")
+		users.POST("", controllers.CreateUser)
 		// users.GET("/:id")
 	}
 }

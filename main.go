@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"HomeOps/config"
+	"HomeOps/constants"
 	"HomeOps/models"
 	"HomeOps/routes"
 
@@ -18,6 +19,8 @@ func ping(c *gin.Context) {
 }
 
 func main() {
+	constants.LoadEnv()
+
 	// 1. MUST BE FIRST
 	config.InitDB()
 

@@ -5,6 +5,8 @@ import (
 	"log"
 	"time"
 
+	"HomeOps/constants"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -32,13 +34,13 @@ func InitDB() {
 	var err error
 
 	cfg := ConnectionConfig{
-		Host:     "localhost",
-		User:     "postgres",
-		Password: "sri20112001",
-		DBName:   "homeops",
-		Port:     5432,
-		SSLMode:  "disable",
-		TimeZone: "UTC",
+		Host:     constants.AppEnv.DBHost,
+		User:     constants.AppEnv.DBUser,
+		Password: constants.AppEnv.DBPassword,
+		DBName:   constants.AppEnv.DBName,
+		Port:     constants.AppEnv.DBPort,
+		SSLMode:  constants.AppEnv.DBSSLMode,
+		TimeZone: constants.AppEnv.DBTimeZone,
 	}
 
 	DB, err = gorm.Open(postgres.Open(cfg.DSN()), &gorm.Config{})
