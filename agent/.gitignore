@@ -1,0 +1,24 @@
+# Binaries
+*.exe
+*.out
+*.test
+*.o
+*.a
+*.so
+/bin/
+dist/
+
+# Go build cache
+/vendor/
+
+# Air live reload
+tmp/
+
+# Env / secrets
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
