@@ -1,19 +1,18 @@
 package routes
 
 import (
+	"HomeOps/utils/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ping(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
+	response.Success(c, http.StatusOK, "pong")
 }
 
 func health(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
+	response.Success(c, http.StatusOK, "Server is healthy", gin.H{
 		"health": true,
 	})
 }
@@ -28,6 +27,8 @@ func SetupRoutes(router *gin.Engine) {
 	{
 		UserRoutes(api)
 		AuthRoutes(api)
+		MetricRoutes(api)
+		ServerRoutes(api)
 
 	}
 }

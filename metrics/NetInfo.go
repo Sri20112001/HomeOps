@@ -19,7 +19,7 @@ func GetNetworkInfo() ([]NetInfo, error) {
 
 	networkInfo, err := net.IOCounters(true)
 	if err != nil {
-		fmt.Errorf("Network error:", err)
+		return nil, fmt.Errorf("network error: %w", err)
 	}
 
 	for _, network := range networkInfo {

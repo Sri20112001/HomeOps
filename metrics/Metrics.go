@@ -1,11 +1,5 @@
 package metrics
 
-import (
-	"encoding/json"
-	"fmt"
-	"log"
-)
-
 type SystemInfo struct {
 	Host      HostInfo      `json:"host"`
 	CPU       CPUInfo       `json:"cpu"`
@@ -15,51 +9,43 @@ type SystemInfo struct {
 	Processes []ProcessInfo `json:"processes"`
 }
 
-func ShowMetrics() {
-
+func GetSystemInfo() (SystemInfo, error) {
 	host, err := GetHostInfo()
 	if err != nil {
-		log.Fatal(err)
+		return SystemInfo{}, err
 	}
 
 	cpu, err := GetCPUInfo()
 	if err != nil {
-		log.Fatal(err)
+		return SystemInfo{}, err
 	}
 
 	memory, err := GetMemoryInfo()
 	if err != nil {
-		log.Fatal(err)
+		return SystemInfo{}, err
 	}
 
 	disks, err := GetDiskInfo()
 	if err != nil {
-		log.Fatal(err)
+		return SystemInfo{}, err
 	}
 
 	network, err := GetNetworkInfo()
 	if err != nil {
-		log.Fatal(err)
+		return SystemInfo{}, err
 	}
 
 	processes, err := GetProcessInfo()
 	if err != nil {
-		log.Fatal(err)
+		return SystemInfo{}, err
 	}
 
-	systemInfo := SystemInfo{
+	return SystemInfo{
 		Host:      host,
 		CPU:       cpu,
 		Memory:    memory,
 		Disks:     disks,
 		Network:   network,
 		Processes: processes,
-	}
-
-	data, err := json.MarshalIndent(systemInfo, "", "    ")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(string(data))
+	}, nil
 }

@@ -19,7 +19,7 @@ func GenerateToken(user models.User) (string, error) {
 		"userId":   user.ID,
 		"username": user.Username, // or user.Username, matching your models.User definition
 		"email":    user.Email,
-		"exp":      time.Now().Add(time.Minute * 15).Unix(), // 5-15 mins for access tokens
+		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 		"iat":      time.Now().Unix(),
 	}
 

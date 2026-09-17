@@ -2,21 +2,13 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"HomeOps/config"
 	"HomeOps/constants"
-	"HomeOps/models"
 	"HomeOps/routes"
 
 	"github.com/gin-gonic/gin"
 )
-
-func ping(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
-}
 
 func main() {
 	constants.LoadEnv()
@@ -25,7 +17,7 @@ func main() {
 	config.InitDB()
 
 	// 2. ONLY THEN call AutoMigrate
-	err := config.DB.AutoMigrate(&models.User{})
+	err := config.MigrateDB()
 	if err != nil {
 		log.Fatalf("Migration failed: %v", err)
 	}
@@ -33,5 +25,5 @@ func main() {
 	// 3. Setup routes and run
 	router := gin.Default()
 	routes.SetupRoutes(router)
-	router.Run(":3500")
+	router.Run(":" + constants.AppEnv.Port)
 }

@@ -3,6 +3,7 @@ package controllers
 import (
 	"HomeOps/config"
 	"HomeOps/models"
+	"HomeOps/utils/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,37 +22,25 @@ func GetUsers(c *gin.Context) {
 
 	result := config.DB.Find(&users)
 	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": result.Error.Error(),
-		})
+		response.Error(c, http.StatusInternalServerError, result.Error.Error())
 		return
 	}
 
-	c.JSON(
-		http.StatusOK, gin.H{
-			"data": users,
-		},
-	)
+	response.Success(c, http.StatusOK, "Users retrieved successfully", users)
 }
 
 func CreateUser(c *gin.Context) {
 	var input CreateUserInput
 
 	if err := c.ShouldBindBodyWithJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		response.Error(c, http.StatusBadRequest, err.Error())
 		return
 	}
 	id := uuid.New()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 
 	if err != nil {
-		c.JSON(
-			http.StatusInternalServerError, gin.H{
-				"error": "Failed to hash password",
-			},
-		)
+		response.Error(c, http.StatusInternalServerError, "Failed to hash password")
 		return
 	}
 
@@ -64,18 +53,10 @@ func CreateUser(c *gin.Context) {
 
 	result := config.DB.Create(&user)
 	if result.Error != nil {
-		c.JSON(
-			http.StatusConflict, gin.H{
-				"error": result.Error.Error(),
-			},
-		)
+		response.Error(c, http.StatusConflict, result.Error.Error())
 		return
 	}
 
-	c.JSON(
-		http.StatusCreated, gin.H{
-			"data": user,
-		},
-	)
+	response.Success(c, http.StatusCreated, "User created successfully", user)
 
 }
